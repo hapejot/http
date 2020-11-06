@@ -22,8 +22,8 @@ add_executable( ${EXE} http.c )
 target_link_libraries( ${EXE} PUBLIC http )
 install( TARGETS ${EXE} RUNTIME DESTINATION bin )
 
-add_executable( httpd-min  fileserver_example_dirs.c )
-target_link_libraries( httpd-min microhttpd )
+add_executable( httpd-min  websocket_threaded_example.c )
+target_link_libraries( httpd-min microhttpd pthread )
 install( TARGETS httpd-min RUNTIME DESTINATION bin )
 
 
