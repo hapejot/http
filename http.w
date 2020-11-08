@@ -75,7 +75,39 @@ ahc_echo (void *cls,
           const char *upload_data,
           size_t *upload_data_size, void **ptr)
 {
-    fprintf(stderr, "ECHO url:%s\n method:%s\n", url, method);
-    return MHD_NO;
+  static char *page = "{\"data\":1}";
+  static int aptr;
+  struct MHD_Response *response;
+  enum MHD_Result ret;
+  int fd;
+  struct stat buf;
+  (void) cls;               /* Unused. Silent compiler warning. */
+  (void) version;           /* Unused. Silent compiler warning. */
+  (void) upload_data;       /* Unused. Silent compiler warning. */
+  (void) upload_data_size;  /* Unused. Silent compiler warning. */
+
+  fprintf(stderr, "ECHO url:%s\n method:%s\n", url, method);
+
+  if ( (0 != strcmp (method, MHD_HTTP_METHOD_GET)) &&
+       (0 != strcmp (method, MHD_HTTP_METHOD_HEAD)) )
+    return MHD_NO;              /* unexpected method */
+
+
+  response = MHD_create_response_from_buffer (strlen (page),
+                                                (void *) page,
+                                                MHD_RESPMEM_PERSISTENT);
+  ret = MHD_queue_response (connection, MHD_HTTP_NOT_FOUND, response);
+  MHD_destroy_response (response);
+  return ret;
 }
+
+@
+@<initialize request local data@>=
+if (&aptr != *ptr)
+{
+  /* do never respond on first call */
+  *ptr = &aptr;
+  return MHD_YES;
+}
+
 @*INDEX.
