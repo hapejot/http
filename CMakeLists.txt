@@ -28,12 +28,16 @@ list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/dummy.c  )
 add_library(http  ${SOURCES})
 add_executable( ${EXE} http.c )
 target_link_libraries( ${EXE} PUBLIC http )
+target_link_libraries( ${EXE} ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS ${EXE} RUNTIME DESTINATION bin )
 
 add_executable( httpd-min  websocket_threaded_example.c )
 target_link_libraries( httpd-min ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS httpd-min RUNTIME DESTINATION bin )
 
+add_executable( static-files  fileserver_example.c )
+target_link_libraries( static-files ${HTTP_LIB} ${PTHREAD_LIB} )
+install( TARGETS static-files RUNTIME DESTINATION bin )
 
 add_custom_command( OUTPUT ${SOURCES} http.c
                     COMMAND ctangle ${WEB}
