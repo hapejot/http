@@ -31,7 +31,7 @@ target_link_libraries( ${EXE} PUBLIC http )
 target_link_libraries( ${EXE} ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS ${EXE} RUNTIME DESTINATION bin )
 
-add_executable( httpd-min  websocket_threaded_example.c )
+add_executable( httpd-min  websocket_threaded_example.c lexer.c  )
 target_link_libraries( httpd-min ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS httpd-min RUNTIME DESTINATION bin )
 
@@ -50,4 +50,8 @@ add_custom_command( OUTPUT ${PDF}
                     COMMAND ${CMAKE_COMMAND} -E make_directory ${PROJECT_SOURCE_DIR}/doc
                     COMMAND ${CMAKE_COMMAND} -E copy ${PDF} ${PROJECT_SOURCE_DIR}/doc
                     DEPENDS ${TEX} )
+add_custom_command( OUTPUT lexer.c
+                    COMMAND re2c lexer.re -o lexer.c -ci
+                    )
 add_custom_target( doc ALL DEPENDS ${PDF} )
+
