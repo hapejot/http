@@ -18,6 +18,7 @@ set(EXECUTABLE_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin)
 set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/bin )
 
 file(GLOB WEB http.w)
+set(LEXER ${PROJECT_SOURCE_DIR}/lexer.re )
 # file(GLOB TEX http.tex)
 set(TEX http.tex)
 set(EXE run_http)
@@ -28,15 +29,15 @@ list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/dummy.c  )
 add_library(http  ${SOURCES})
 add_executable( ${EXE} http.c )
 target_link_libraries( ${EXE} PUBLIC http )
-target_link_libraries( ${EXE} ${HTTP_LIB} ${PTHREAD_LIB} )
+target_link_libraries( ${EXE} PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS ${EXE} RUNTIME DESTINATION bin )
 
 add_executable( httpd-min  websocket_threaded_example.c lexer.c  )
-target_link_libraries( httpd-min ${HTTP_LIB} ${PTHREAD_LIB} )
+target_link_libraries( httpd-min PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS httpd-min RUNTIME DESTINATION bin )
 
 add_executable( static-files  fileserver_example.c )
-target_link_libraries( static-files ${HTTP_LIB} ${PTHREAD_LIB} )
+target_link_libraries( static-files PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS static-files RUNTIME DESTINATION bin )
 
 add_custom_command( OUTPUT ${SOURCES} http.c
@@ -51,7 +52,6 @@ add_custom_command( OUTPUT ${PDF}
                     COMMAND ${CMAKE_COMMAND} -E copy ${PDF} ${PROJECT_SOURCE_DIR}/doc
                     DEPENDS ${TEX} )
 add_custom_command( OUTPUT lexer.c
-                    COMMAND re2c lexer.re -o lexer.c -ci
-                    )
+                    COMMAND re2c ${LEXER} -o lexer.c -ci )
 add_custom_target( doc ALL DEPENDS ${PDF} )
 
