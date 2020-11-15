@@ -27,18 +27,20 @@ set(PDF http.pdf)
 list(APPEND SOURCES ${CMAKE_CURRENT_BINARY_DIR}/dummy.c  )
 
 add_library(http  ${SOURCES})
+target_link_libraries( http PUBLIC ${PTHREAD_LIB} )
+
 add_executable( ${EXE} http.c )
 target_link_libraries( ${EXE} PUBLIC http )
 target_link_libraries( ${EXE} PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
 install( TARGETS ${EXE} RUNTIME DESTINATION bin )
 
-add_executable( httpd-min  websocket_threaded_example.c lexer.c  )
-target_link_libraries( httpd-min PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
-install( TARGETS httpd-min RUNTIME DESTINATION bin )
+# add_executable( httpd-min  websocket_threaded_example.c lexer.c  )
+# target_link_libraries( httpd-min PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
+# install( TARGETS httpd-min RUNTIME DESTINATION bin )
 
-add_executable( static-files  fileserver_example.c )
-target_link_libraries( static-files PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
-install( TARGETS static-files RUNTIME DESTINATION bin )
+# add_executable( static-files  fileserver_example.c )
+# target_link_libraries( static-files PUBLIC ${HTTP_LIB} ${PTHREAD_LIB} )
+# install( TARGETS static-files RUNTIME DESTINATION bin )
 
 add_custom_command( OUTPUT ${SOURCES} http.c
                     COMMAND ctangle ${WEB}
@@ -54,4 +56,3 @@ add_custom_command( OUTPUT ${PDF}
 add_custom_command( OUTPUT lexer.c
                     COMMAND re2c ${LEXER} -o lexer.c -ci )
 add_custom_target( doc ALL DEPENDS ${PDF} )
-
