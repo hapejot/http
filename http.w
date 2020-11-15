@@ -44,7 +44,7 @@ MHD_OPTION_HTTPS_MEM_KEY, key_pem,
 MHD_OPTION_HTTPS_MEM_CERT, cert_pem,
 
 @ @<logging options@>=
-MHD_OPTION_EXTERNAL_LOGGER, logger, NULL,
+MHD_OPTION_EXTERNAL_LOGGER, logger, &argv,
 
 @ @<library functions@>=
 void logger(void *cls, const char *fm, va_list ap){
@@ -76,8 +76,7 @@ main (int argc, char *const *argv)
 
   d = MHD_start_daemon ( flags, @|
                         atoi(argv[1]), @|
-                        @<accept policy callback...@>@|
-                        @<logging options@>@|
+                        @<accept policy callback...@>@|                        
                         @<http request...@>@|
                         @<http options@>@|
                         MHD_OPTION_END);
