@@ -43,10 +43,10 @@ install( TARGETS ${EXE} RUNTIME DESTINATION bin )
 # install( TARGETS static-files RUNTIME DESTINATION bin )
 
 add_custom_command( OUTPUT ${SOURCES} http.c
-                    COMMAND ctangle ${WEB}
+                    COMMAND ctangle ${WEB} || true
                     DEPENDS ${WEB} )
 add_custom_command( OUTPUT ${TEX} 
-                    COMMAND cweave ${WEB}
+                    COMMAND cweave ${WEB} || true
                     DEPENDS ${WEB})
 add_custom_command( OUTPUT ${PDF} 
                     COMMAND pdftex ${TEX} 

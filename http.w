@@ -1,16 +1,68 @@
 @* http.
 
-@* Include defintions.
+@* File Structure.
 
-@<include files@>=
+@ Main Program.
+
+@c
+@<include...@>@;
+@<decl...@>@;
+@<type decl...@>@;
+@<local functions@>@;
+int
+main (int argc, char *const *argv)
+{
+  struct MHD_Daemon *d;
+  assert( MHD_is_feature_supported(MHD_FEATURE_MESSAGES));
+  if (argc != 2)
+  {
+    printf ("%s PORT\n", argv[0]);
+    return 1;
+  }
+  unsigned int flags = MHD_USE_THREAD_PER_CONNECTION;
+  flags |= MHD_USE_INTERNAL_POLLING_THREAD;
+  flags |= MHD_USE_ERROR_LOG;
+
+  d = MHD_start_daemon ( flags, @|
+                        atoi(argv[1]), @|
+                        @<accept policy callback...@>@|                        
+                        @<http request...@>@|
+                        @<http options@>@|
+                        @<logging options@>@|
+                        MHD_OPTION_END);
+  if (d == NULL)
+    return 1;
+  (void) getc (stdin);
+  MHD_stop_daemon (d);
+  return 0;
+}
+
+@ library
+@(dummy.c@>=
+@<include...@>@;
+@<decl...@>@;
+@<library helper functions@>@;
+@<library functions@>@;
+
+@ @<include files@>=
 #include "platform.h"
 #include <microhttpd.h>
 #include <assert.h>
+#include <stdbool.h>
+
+@ @<initialize request local data@>=
+if (&aptr != *ptr)
+{
+  /* do never respond on first call */
+  *ptr = &aptr;
+  return MHD_YES;
+}
+
 
 @* declarations.
 
 @<declarations of functions@>=
-int
+enum MHD_Result
 cb_request (void *cls,
           struct MHD_Connection *connection,
           const char *url,
@@ -48,43 +100,9 @@ MHD_OPTION_EXTERNAL_LOGGER, logger, &argv,
 
 @ @<library functions@>=
 void logger(void *cls, const char *fm, va_list ap){
-    fprintf(stderr, "!!!!!");
+    fprintf(stderr, "!!!!! ");
     vfprintf(stderr, fm, ap);
     fprintf(stderr, "\n");
-}
-
-@*main.
-
-@c
-@<include...@>@;
-@<decl...@>@;
-@<type decl...@>@;
-@<local functions@>@;
-int
-main (int argc, char *const *argv)
-{
-  struct MHD_Daemon *d;
-  assert( MHD_is_feature_supported(MHD_FEATURE_MESSAGES));
-  if (argc != 2)
-  {
-    printf ("%s PORT\n", argv[0]);
-    return 1;
-  }
-  unsigned int flags = MHD_USE_THREAD_PER_CONNECTION;
-  flags |= MHD_USE_INTERNAL_POLLING_THREAD;
-  flags |= MHD_USE_ERROR_LOG;
-
-  d = MHD_start_daemon ( flags, @|
-                        atoi(argv[1]), @|
-                        @<accept policy callback...@>@|                        
-                        @<http request...@>@|
-                        @<http options@>@|
-                        MHD_OPTION_END);
-  if (d == NULL)
-    return 1;
-  (void) getc (stdin);
-  MHD_stop_daemon (d);
-  return 0;
 }
 
 
@@ -143,11 +161,11 @@ file_free_callback (void *cls)
 
 @
 @<respond static page@>=
-  response = MHD_create_response_from_buffer (strlen (page),
+response = MHD_create_response_from_buffer (    strlen (page),
                                                 (void *) page,
                                                 MHD_RESPMEM_PERSISTENT);
 @ @<library functions@>=
-int print_key_value(void *cls,
+enum MHD_Result print_key_value(void *cls,
                          enum MHD_ValueKind kind,
                          const char *key,
                          const char *value){
@@ -162,7 +180,10 @@ int print_key_value(void *cls,
 @ @<log request info@>=
   fprintf(stderr, "ECHO url:%s\n method:%s\n", url, method);
   fprintf(stderr, "   upload data size: %d\n", *upload_data_size);
-  MHD_get_connection_values(connection, MHD_HEADER_KIND | MHD_COOKIE_KIND | MHD_POSTDATA_KIND | MHD_FOOTER_KIND, print_key_value, NULL);
+  MHD_get_connection_values(connection, 
+                MHD_HEADER_KIND | MHD_COOKIE_KIND | MHD_POSTDATA_KIND | MHD_FOOTER_KIND, 
+                print_key_value, NULL);
+
 @ @<library functions@>=
 enum MHD_Result
 post_iterator (void *cls,
@@ -179,8 +200,23 @@ post_iterator (void *cls,
   return MHD_YES;
 }
 
+@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@<local functions@>=
+static void
+request_completed_callback (void *cls,
+                            struct MHD_Connection *connection,
+                            void **con_cls,
+                            enum MHD_RequestTerminationCode toe)
+{
+  (void) cls;         /* Unused. Silent compiler warning. */
+  (void) connection;  /* Unused. Silent compiler warning. */
+  (void) toe;         /* Unused. Silent compiler warning. */
+  fprintf(stderr, "end of request\n");
+}
 
-@ @<library functions@>=
+
+@ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+@<library functions@>=
 enum MHD_Result
 cb_request (void *cls,
           struct MHD_Connection *connection,
@@ -211,14 +247,25 @@ cb_request (void *cls,
         fprintf(stderr, "%c", upload_data[i]);
       }
       fprintf(stderr, " %p\n", response);
-      response = MHD_create_response_from_buffer(*upload_data_size,
-                                                upload_data,
-                                                MHD_RESPMEM_MUST_COPY);
+      const char *xpage = "XXX";
+      if(false)
+          response = MHD_create_response_from_buffer(   *upload_data_size,
+                                                        (void*)upload_data,
+                                                        MHD_RESPMEM_MUST_COPY);
+      else
+          response = MHD_create_response_from_buffer(   strlen(xpage),
+                                                        (void*)xpage,
+                                                        MHD_RESPMEM_MUST_COPY);
       MHD_add_response_header (response,
                            MHD_HTTP_HEADER_CONTENT_ENCODING,
                            "application/json");
-      *upload_data_size = 0;
+      if(false)
+          *upload_data_size = 0;
       status_code = MHD_HTTP_OK;
+      ret = MHD_queue_response (connection, status_code, response);
+      fprintf(stderr, "x queued response %d -> %d\n", status_code, ret);  
+      MHD_destroy_response (response);
+      return MHD_YES;
     }
   }
   if(response == NULL){
@@ -242,21 +289,5 @@ cb_request (void *cls,
 
 @ @<local functions@>=
 /* empty */
-
-@ library
-@(dummy.c@>=
-@<include...@>@;
-@<decl...@>@;
-@<library helper functions@>@;
-@<library functions@>@;
-
-@
-@<initialize request local data@>=
-if (&aptr != *ptr)
-{
-  /* do never respond on first call */
-  *ptr = &aptr;
-  return MHD_YES;
-}
 
 @*INDEX.
