@@ -1,0 +1,123 @@
+!!!!! Using debug build of libmicrohttpd.
+
+ECHO url:/index.html
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:Cache-Control:max-age=0
+*** 1:Upgrade-Insecure-Requests:1
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9
+*** 1:Sec-Fetch-Site:none
+*** 1:Sec-Fetch-Mode:navigate
+*** 1:Sec-Fetch-User:?1
+*** 1:Sec-Fetch-Dest:document
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+response 00000211B9F711D0
+queued response 200 -> 1
+ECHO url:/jquery.js
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:*/*
+*** 1:Sec-Fetch-Site:same-origin
+*** 1:Sec-Fetch-Mode:no-cors
+*** 1:Sec-Fetch-Dest:script
+*** 1:Referer:http://localhost:8888/index.html
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+ECHO url:/knockout.js
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:*/*
+*** 1:Sec-Fetch-Site:same-origin
+*** 1:Sec-Fetch-Mode:no-cors
+*** 1:Sec-Fetch-Dest:script
+*** 1:Referer:http://localhost:8888/index.html
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+response 00000211B9F711D0
+queued response 200 -> 1
+response 00000211B9F792B0
+queued response 200 -> 1
+ECHO url:/o.js
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:*/*
+*** 1:Sec-Fetch-Site:same-origin
+*** 1:Sec-Fetch-Mode:no-cors
+*** 1:Sec-Fetch-Dest:script
+*** 1:Referer:http://localhost:8888/index.html
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+ECHO url:/sampleProductCategories.js
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:*/*
+*** 1:Sec-Fetch-Site:same-origin
+*** 1:Sec-Fetch-Mode:no-cors
+*** 1:Sec-Fetch-Dest:script
+*** 1:Referer:http://localhost:8888/index.html
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+response 00000211B9F711D0
+response 00000211B9F792B0
+queued response 200 -> 1
+queued response 200 -> 1
+ECHO url:/viewmodel.js
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:*/*
+*** 1:Sec-Fetch-Site:same-origin
+*** 1:Sec-Fetch-Mode:no-cors
+*** 1:Sec-Fetch-Dest:script
+*** 1:Referer:http://localhost:8888/index.html
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+response 00000211B9F711D0
+queued response 200 -> 1
+ECHO url:/favicon.ico
+ method:GET
+   upload data size: 0
+*** 1:Host:localhost:8888
+*** 1:Connection:keep-alive
+*** 1:User-Agent:Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/86.0.4240.198 Safari/537.36
+*** 1:Accept:image/avif,image/webp,image/apng,image/*,*/*;q=0.8
+*** 1:Sec-Fetch-Site:same-origin
+*** 1:Sec-Fetch-Mode:no-cors
+*** 1:Sec-Fetch-Dest:image
+*** 1:Referer:http://localhost:8888/index.html
+*** 1:Accept-Encoding:gzip, deflate, br
+*** 1:Accept-Language:de-DE,de;q=0.9,en-US;q=0.8,en;q=0.7,st;q=0.6
+*** 1:Cookie:_ga=GA1.1.2010246492.1587457098
+*** 2:_ga:GA1.1.2010246492.1587457098
+response 00000211B9F70C80
+queued response 501 -> 1

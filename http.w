@@ -2,6 +2,8 @@
 
 @* File Structure.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 @ Main Program.
 
 @c
@@ -37,6 +39,7 @@ main (int argc, char *const *argv)
   return 0;
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ library
 @(dummy.c@>=
 @<include...@>@;
@@ -44,12 +47,14 @@ main (int argc, char *const *argv)
 @<library helper functions@>@;
 @<library functions@>@;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<include files@>=
 #include "platform.h"
 #include <microhttpd.h>
 #include <assert.h>
 #include <stdbool.h>
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<initialize request local data@>=
 if (&aptr != *ptr)
 {
@@ -59,6 +64,7 @@ if (&aptr != *ptr)
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @* declarations.
 
 @<declarations of functions@>=
@@ -73,31 +79,38 @@ cb_request (void *cls,
 void logger(void *cls,
                    const char *fm,
                    va_list ap);
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @
 @<type declarations@>=
 typedef struct _Request * Request;
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @
 @<accept policy callback option@>=
 NULL , NULL,
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @
 @<http request callback option@>=
 &cb_request , NULL,
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @
 @<http options@>=
 MHD_OPTION_CONNECTION_TIMEOUT, 256,
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ Define HTTPS related options. The key and a certificate needs to be set.
 @<https specific options@>=
 MHD_OPTION_HTTPS_MEM_KEY, key_pem,
 MHD_OPTION_HTTPS_MEM_CERT, cert_pem,
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<logging options@>=
 MHD_OPTION_EXTERNAL_LOGGER, logger, &argv,
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<library functions@>=
 void logger(void *cls, const char *fm, va_list ap){
     fprintf(stderr, "!!!!! ");
@@ -108,8 +121,10 @@ void logger(void *cls, const char *fm, va_list ap){
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @*processing.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @
 @<try open file@>=
 
@@ -133,12 +148,15 @@ void logger(void *cls, const char *fm, va_list ap){
   }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ respond with data in file by using callbacks for data and for cleanup.
 @<respond page from file content@>=
 status_code = MHD_HTTP_OK;
 response = MHD_create_response_from_callback (buf.st_size, 32 * 1024,       /* 32k  size */
                                                   &file_reader, file,
                                                   &file_free_callback);
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ file callback
 @<library functions@>=
 static ssize_t
@@ -150,6 +168,7 @@ file_reader (void *cls, uint64_t pos, char *buf, size_t max)
   return fread (buf, 1, max, file);
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ file cleanup callback
 @<library functions@>=
 static void
@@ -159,6 +178,7 @@ file_free_callback (void *cls)
 }
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @
 @<respond static page@>=
 response = MHD_create_response_from_buffer (    strlen (page),
@@ -173,10 +193,12 @@ enum MHD_Result print_key_value(void *cls,
   return MHD_YES;
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<check for allowed method@>=
   if ( (0 != strcmp (method, MHD_HTTP_METHOD_GET)) &&
        (0 != strcmp (method, MHD_HTTP_METHOD_HEAD)) )
     return MHD_NO;              /* unexpected method */
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<log request info@>=
   fprintf(stderr, "ECHO url:%s\n method:%s\n", url, method);
   fprintf(stderr, "   upload data size: %d\n", *upload_data_size);
@@ -184,6 +206,7 @@ enum MHD_Result print_key_value(void *cls,
                 MHD_HEADER_KIND | MHD_COOKIE_KIND | MHD_POSTDATA_KIND | MHD_FOOTER_KIND, 
                 print_key_value, NULL);
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<library functions@>=
 enum MHD_Result
 post_iterator (void *cls,
@@ -284,10 +307,13 @@ cb_request (void *cls,
   return ret;
 }
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<library helper functions@>=
 /* empty */
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @ @<local functions@>=
 /* empty */
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @*INDEX.
