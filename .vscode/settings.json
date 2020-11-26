@@ -1,3 +1,22 @@
 {
-    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools"
+    "cmake.configureArgs": [                                                                                                                                                   
+        "-DCMAKE_SYSTEM_VERSION=10.0"                                                                                                                                          
+    ],
+    "C_Cpp.default.configurationProvider": "ms-vscode.cmake-tools",
+    "todo-tree.general.statusBar": "total",
+    "todo-tree.regex.regex": "((//|#|<!--|/\\*|^|%)\\s*($TAGS)|^\\s*- \\[ \\])",
+    "todo-tree.regex.regexCaseSensitive": false,
+    "todo-tree.tree.buttons.scanMode": true,
+    "todo-tree.tree.scanMode": "workspace",
+    "todo-tree.general.tags": [
+        "BUG",
+        "HACK",
+        "FIXME",
+        "TODO",
+        "XXX",
+        "@*",
+        "@<"
+    ],
+    "todo-tree.tree.showBadges": true,
+    "todo-tree.tree.showCountsInTree": true
 }
