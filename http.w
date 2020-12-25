@@ -41,6 +41,7 @@ main (int argc, char *const *argv)
 library
 @(dummy.c@>=
 @<include...@>@;
+#include "cnt.h"
 @h
 @<type decl...@>@;
 @<decl...@>@;
@@ -50,11 +51,12 @@ library
 
 @ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @<include files@>=
-#include "platform.h"
 #include <microhttpd.h>
 #include <assert.h>
 #include <stdbool.h>
-
+#include <stdio.h>
+#include <sys/types.h>
+#include <sys/stat.h>
 @ %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 @<initialize request local data@>=
 if (&aptr != *ptr)
@@ -164,6 +166,7 @@ cb_request (void *cls,
   return ret;
 }
 @ %XXX: Dispatch request
+|*ptr| as the data structure representing the internal request data.
 @<dispatch request@>=
   if(*ptr) {
     struct _request * r = *ptr;

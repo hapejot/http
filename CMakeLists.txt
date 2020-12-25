@@ -2,13 +2,19 @@
 cmake_minimum_required( VERSION 2.8 )
 project(http)
 
+set( CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR})
 set( CMAKE_PREFIX_PATH ${CMAKE_SOURCE_DIR}/${CMAKE_HOST_SYSTEM_NAME} )
 message(${CMAKE_SOURCE_DIR}/${CMAKE_HOST_SYSTEM_NAME} )
 
+
+
 find_package(microhttp)
 find_package(pthread)
+find_package(hape_c)
 
-include_directories( include  ${CMAKE_HOST_SYSTEM_NAME} )
+include_directories(    include  
+                        ${CMAKE_HOST_SYSTEM_NAME} 
+                        ${HAPE_INCLUDE} )
 
 add_definitions(-DBUILDNO="TEST" -DHAVE_STRUCT_TIMESPEC)
 
